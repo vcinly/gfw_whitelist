@@ -9257,7 +9257,8 @@ var white_domains = {"am":{
 "zzist":1,
 "zzjs":1,
 "zzph":1,
-"zzrc":1
+"zzrc":1,
+"luoo":1
 },"org":{
 "0513":1,
 "1000plan":1,

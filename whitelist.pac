@@ -1,12 +1,27 @@
 var wall_proxy = "SOCKS5 127.0.0.1:1080; SOCKS 127.0.0.1:1080;";
-var nowall_proxy = "DIRECT;";
-var direct = "DIRECT;";
-var ip_proxy = "DIRECT;";
+/* var nowall_proxy = "SOCKS5 127.0.0.1:1084; SOCKS 127.0.0.1:1084;";
+* var direct = "SOCKS5 127.0.0.1:1084; SOCKS 127.0.0.1:1084;";
+* var ip_proxy = "SOCKS5 127.0.0.1:1084; SOCKS 127.0.0.1:1084;";
+*/
+
+var local_direct = "DIRECT;";
+
+
+ var nowall_proxy = "DIRECT;";
+ var direct = "DIRECT;";
+ var ip_proxy = "DIRECT;";
+
 
 /*
  * Copyright (C) 2014 breakwa11
  * https://github.com/breakwa11/gfw_whitelist
  */
+
+var local_domains = {"work":{
+"weidai":1
+},"com":{
+"wdai":1
+}}
 
 var white_domains = {"am":{
 "126":1,
@@ -185,7 +200,8 @@ var white_domains = {"am":{
 "zhibo8":1,
 "zhuwang":1,
 "zmsc":1,
-"zyqc":1
+"zyqc":1,
+"wdtest":1
 },"cm":{
 "4":1,
 "60":1,
@@ -200,7 +216,9 @@ var white_domains = {"am":{
 "lixin":1,
 "xiaomayi":1,
 "xiapu":1,
-"ychdzx":1
+"ychdzx":1,
+"huobipro":1,
+"lanhuapp":1
 },"com":{
 "0-6":1,
 "0001688":1,
@@ -3014,6 +3032,7 @@ var white_domains = {"am":{
 "dospy":1,
 "dostor":1,
 "douban":1,
+"doubanio":1,
 "douguo":1,
 "douluodalu123":1,
 "douxie":1,
@@ -7344,6 +7363,7 @@ var white_domains = {"am":{
 "xiaoshuo766":1,
 "xiaoxiangrc":1,
 "xiaoyeren":1,
+"xiaoyi":1,
 "xiaoyuanfeng":1,
 "xiaozhi123":1,
 "xiaozhu":1,
@@ -8274,7 +8294,29 @@ var white_domains = {"am":{
 "zzwms":1,
 "zzyjs":1,
 "zzyycc":1,
-"zzz4":1
+"zzz4":1,
+"sobot":1,
+"omniaccount":1,
+"ks-cdn":1,
+"acgvideo":1,
+"worktile":1,
+"weidai":1,
+"dingtalk":1,
+"wdai":1,
+"smzdm":1,
+"dbfansub":1,
+"playstation":1,
+"a9vg":1,
+"psnine":1,
+"rabbitpre":1,
+"citics":1,
+"mgtv":1,
+"huya":1,
+"gmshash":1,
+"sparkpool":1,
+"trello":1,
+"growingio": 1,
+"lanhuapp":1
 },"de":{
 "china-botschaft":1
 },"edu":{
@@ -8296,7 +8338,10 @@ var white_domains = {"am":{
 "cli":1,
 "iapps":1,
 "iyy":1,
-"yixin":1
+"tower":1,
+"yixin":1,
+"fir":1,
+"shimo":1
 },"info":{
 "gmold":1,
 "iyaya":1,
@@ -9256,7 +9301,10 @@ var white_domains = {"am":{
 "zzist":1,
 "zzjs":1,
 "zzph":1,
-"zzrc":1
+"zzrc":1,
+"luoo":1,
+"ddns":1,
+"ipip":1
 },"org":{
 "0513":1,
 "1000plan":1,
@@ -9539,7 +9587,9 @@ var white_domains = {"am":{
 "zx110":1,
 "zycq":1,
 "zyxuan":1,
-"zzbm":1
+"zzbm":1,
+"ruby-china":1,
+"ethfans":1
 },"sg":{
 "iedu":1
 },"sh":{
@@ -9597,7 +9647,8 @@ var white_domains = {"am":{
 "wasu":1,
 "weihai":1,
 "zhenping":1,
-"zohi":1
+"zohi":1,
+"zhanqi":1
 },"tw":{
 "hexun.com":1,
 "taiwandao":1
@@ -9605,6 +9656,10 @@ var white_domains = {"am":{
 "pangu":1
 },"ws":{
 "0798":1
+},"work":{
+"weidai":1
+},"wiki":{
+"weidai":1
 },"xn--fiqs8s":{
 "":1
 }
@@ -9647,7 +9702,7 @@ function isInSubnetRange(ipRange, intIp) {
 function getProxyFromDirectIP(strIp) {
 	var intIp = convertAddress(strIp);
 	if ( isInSubnetRange(subnetIpRangeList, intIp) ) {
-		return direct;
+		return local_direct;
 	}
 	return ip_proxy;
 }
@@ -9684,7 +9739,10 @@ function isInDomains(domain_dict, host) {
 }
 function FindProxyForURL(url, host) {
 	if ( isPlainHostName(host) === true ) {
-		return direct;
+		return local_direct;
+	}
+  if ( isInDomains(local_domains, host) === true ) {
+		return local_direct;
 	}
 	if ( check_ipv4(host) === true ) {
 		return getProxyFromDirectIP(host);
